@@ -4,5 +4,5 @@ const PORT = process.env.PORT || 5000;
 
 express()
   .use(express.static(path.join(__dirname, 'static')))
-  .get('/', (req, res) => res.send('Hello World!'))
+  .get('/', (req, res) => res.render('static/index.html'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
