@@ -147,14 +147,12 @@
         var clone = _WA.cloneNode(true);
         _N_a.innerText = addr;
         clone[_qsa]('.w_bs,.w_cs,#w_qr,#w_a').forEach(i => i.innerHTML = '');
-        clone[_sa]('style', 'display:none;');
+        _W_rl[_sa]('href', '');
+        _W_rl.innerText = '';
         clone[_sa]('data-seed', seed);
-        clone[_qsa]('script').forEach(i => {
-            i[_sa]('src', i.src);
-        });
-        clone[_qsa]('link').forEach(i => {
-            i[_sa]('href', i.href);
-        });
+        clone[_qsa]('script').forEach(i => i[_sa]('src', i.src));
+        clone[_qsa]('link').forEach(i => i[_sa]('href', i.href));
+        
         var html = String(clone.outerHTML).replace(/\n|\t|\s{4}/g, '');
         clone = undefined;
         _N_s[_v] = seed;
