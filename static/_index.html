@@ -477,7 +477,7 @@
                 apiType: 'node',
                 baseURL: apiUrl,
             });
-            var tx = await sdk.postTx(_ms.SendTxParams({
+            var txParams = {
                 chainId: 1,
                 privateKey: W.getPrivateKeyString(),
                 address: addr,
@@ -485,7 +485,12 @@
                 coinSymbol: COIN,
                 feeCoinSymbol: COIN,
                 message: ''
-            }));
+            };
+            console.log(txParams);
+            var ttx = _ms.SendTxParams(txParams);
+            console.log(ttx);
+            var tx = await sdk.postTx(ttx);
+            console.log(tx);
             if(tx) {
                 if(cb === null) {
                     var link = h + 'explorer.minter.network/transactions/' + tx;
