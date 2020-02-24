@@ -1,0 +1,22 @@
+{
+  "name": "walleto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "wallet.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maroon775/walleto.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maroon775/walleto/issues"
+  },
+  "homepage": "https://github.com/maroon775/walleto#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
