@@ -7,13 +7,15 @@
     </head>
     <body>
         <script type="text/javascript">
-            var frame = document.createElement('iframe');
-            frame.id = 'iframe';
-            frame.setAttribute('sandbox','allow-scripts allow-forms allow-top-navigation allow-popups allow-modals allow-popups-to-escape-sandbox');
+//            var frame = document.createElement('iframe');
+//            frame.id = 'iframe';
+//            frame.setAttribute('sandbox','allow-scripts allow-forms allow-top-navigation allow-popups allow-modals allow-popups-to-escape-sandbox');
             var hash = document.location.hash;
             if(hash) {
-                frame.src = hash.toString().split(/^\#\/?(.*)/)[1];
-                document.querySelector('body').appendChild(frame);
+                var index = hash.toString().indexOf('base64,');
+                if(index > 0) {
+                    document.querySelector('body').innerHTML = atob(hash.substr(index+7));
+                }
             }
         </script>
         <style type="text/css">
