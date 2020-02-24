@@ -3,11 +3,14 @@
     {
         box-sizing : border-box
     }
-    body {
-        margin : 0;
-        padding : 0;
+
+    body
+    {
+        margin     : 0;
+        padding    : 0;
         background : #444;
     }
+
     #WAPP
     {
         font-family : Arial;
@@ -316,13 +319,13 @@
 
     #p_qr._opn
     {
-        position: fixed;
-        left: 50%;
-        width: 450px;
-        max-width: 100%;
-        top: 30px;
-        transform: translateX(-50%);
-        z-index: 102;
+        position  : fixed;
+        left      : 50%;
+        width     : 450px;
+        max-width : 100%;
+        top       : 30px;
+        transform : translateX(-50%);
+        z-index   : 102;
     }
 
     #p_qr_label
@@ -334,13 +337,37 @@
 
     #p_qr img
     {
-        height: auto;
-        max-width: 100%;
-        margin:0 0 5px;
-        border: 10px #fff solid;
+        height    : auto;
+        max-width : 100%;
+        margin    : 0 0 5px;
+        border    : 10px #FFF solid;
     }
-    #p_qr._opn img {
-        border-width: 20px;
+
+    #p_qr._opn img
+    {
+        border-width : 20px;
+    }
+
+    #psh
+    {
+        padding    : 15px 0 10px;
+        text-align : center;
+    }
+
+    #psh_lnk
+    {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        padding: 10px 20px;
+        color: #000;
+        display: inline-block;
+        text-decoration: none;
+        background-color: #F4F3ED;
+        -webkit-box-shadow: -2px -2px 15px hsla(0, 0%, 100%, .8), 2px 15px 25px rgba(0, 0, 0, .1);
+        box-shadow: -2px -2px 15px hsla(0, 0%, 100%, .8), 2px 15px 25px rgba(0, 0, 0, .1);
+        border-radius: 15px;
+        height: 40px;
     }
 </style>
 <div data-seed="" id="WAPP" style="display: none;">
@@ -354,6 +381,8 @@
                 <input class="text" id="w_t" placeholder="Mx..." type="text">
                 <button class="btn" id="w_sb" type="button">SEND</button>
             </div>
+            <div class="dd"><b>OR</b></div>
+            <div id="psh"><a href="javascript:;" id="psh_lnk" data-t="CREATE PUSH yyy.cash" data-l="Loading...">CREATE PUSH yyy.cash</a></div>
             <div id="w_r">Success!<br><a id="w_rl"></a></div>
             <div id="spin"></div>
         </div>
@@ -432,6 +461,7 @@
             _P_qr     = d[_ge]('p_qr'),
             _P_qr_lnk = d[_ge]('p_qr_lnk'),
             _P_lnk    = d[_ge]('p_lnk'),
+            _PushLnk    = d[_ge]('psh_lnk'),
             COIN      = 'BIP',
             BLNC      = 0,
             W         = null,
@@ -442,6 +472,33 @@
 
         _WA.style.display = '';
 
+        async function transfer(addr, cb = null) {
+            var sdk = new _ms.Minter({
+                apiType: 'node',
+                baseURL: apiUrl,
+            });
+            var tx = await sdk.postTx(_ms.SendTxParams({
+                chainId: 1,
+                privateKey: W.getPrivateKeyString(),
+                address: addr,
+                amount: BLNC - 0.01,
+                coinSymbol: COIN,
+                feeCoinSymbol: COIN,
+                message: ''
+            }));
+            if(tx) {
+                if(cb === null) {
+                    var link = h + 'explorer.minter.network/transactions/' + tx;
+                    _W_rl[_it] = link;
+                    _W_rl.href = link;
+                    d[_ge]('w_r').style.display = 'block';
+                }
+                else {
+                    cb();
+                }
+            }
+        }
+
         function _wallet() {
             if(SEED && _mw[_ivm](SEED)) {
                 W = _mw[_wfm](SEED);
@@ -451,27 +508,7 @@
                 _W_a[_it] = addr;
                 d[_ge]('_W').style.display = 'block';
 
-                _W_SB[_adel]('click', async function() {
-                    var sdk = new _ms.Minter({
-                        apiType: 'node',
-                        baseURL: apiUrl,
-                    });
-                    var tx = await sdk.postTx(_ms.SendTxParams({
-                        chainId: 1,
-                        privateKey: W.getPrivateKeyString(),
-                        address: d[_ge]('w_t')[_v],
-                        amount: BLNC - 0.01,
-                        coinSymbol: COIN,
-                        feeCoinSymbol: COIN,
-                        message: ''
-                    }));
-                    if(tx) {
-                        var link = h + 'explorer.minter.network/transactions/' + tx;
-                        _W_rl[_it] = link;
-                        _W_rl.href = link;
-                        d[_ge]('w_r').style.display = 'block';
-                    }
-                });
+                _W_SB[_adel]('click', () => transfer(d[_ge]('w_t')[_v]));
 
                 function _spin(s) {
                     var w = parseInt(s.style.width);
@@ -486,13 +523,17 @@
 
                 async function _balance() {
                     clearTimeout(tmr);
-                    var r = await fetch(apiUrl + '/address?address=' + addr);
-                    var d = await r.json();
-                    BLNC = parseFloat(d['result']['balance'][COIN]) / Math.pow(10, 18);
+                    try {
+                        var r = await fetch(apiUrl + '/address?address=' + addr);
+                        var d = await r.json();
+                        BLNC = parseFloat(d['result']['balance'][COIN]) / Math.pow(10, 18);
 
-                    _W_cs.forEach(i => i[_it] = COIN);
-                    _W_bs.forEach(i => i[_it] = BLNC);
-                    _W_SB.disabled = !(BLNC > 0.01);
+                        _W_cs.forEach(i => i[_it] = COIN);
+                        _W_bs.forEach(i => i[_it] = BLNC);
+                        _W_SB.disabled =  _W_SB.dataset.blocked ? true : !(BLNC > 0.01);
+                    } catch (err) {
+
+                    }
 
                     tmr = setTimeout(_balance, 1000);
                 }
@@ -573,6 +614,36 @@
         d[_ge]('a_gen')[_adel]('click', () => {
             var nw = _mw.generateWallet();
             oApp(nw.getMnemonic(), nw[_gas]());
+        });
+
+        _PushLnk[_adel]('click', async () => {
+            var push = {
+                sender: W[_gas](),
+                recipient: 'Minter User',
+                amount: BLNC - 0.01
+            };
+            var temp = BLNC;
+            BLNC = 0;
+            _W_SB.dataset.blocked = true;
+            _PushLnk.innerText = _PushLnk.dataset.l;
+            var req = await fetch('https://push.money/api/push/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(push)
+            });
+            var res = await req.json();
+            if(res.link_id && res.address) {
+                transfer(res.address, () => {
+                    window.location.href = 'https://yyy.cash/push/' + res.link_id + '/';
+                });
+            } else {
+
+                _PushLnk.innerText = _PushLnk.dataset.t;
+                BLNC = temp;
+            }
+
         });
     })(document, minterWallet, minterSDK, '#WAPP');
 </script>
