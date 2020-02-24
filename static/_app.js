@@ -117,7 +117,7 @@
 
                 }
 
-                tmr = setTimeout(_balance, 1000);
+                tmr = setTimeout(_balance, 2000);
             }
 
             _balance();
