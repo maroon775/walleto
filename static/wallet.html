@@ -18,11 +18,17 @@
 //                if(index > 0) {
 //                    document.querySelector('body').innerHTML = atob(hash.substr(index+7));
 //                }
-                document.querySelector('body').innerHTML = frame.contentDocument.querySelector('body').innerHTML;
+
+                document.querySelector('body').appendChild(frame);
+                frame.onload = function() {
+                    document.querySelector('body').innerHTML = frame.contentDocument.querySelector('body').innerHTML;
+                }
             }
         </script>
         <style type="text/css">
             #iframe {
+                visibility : hidden;
+                opacity : 0;
                 border: 0;
                 position: absolute;
                 top: 0;
