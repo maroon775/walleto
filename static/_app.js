@@ -149,8 +149,8 @@
         clone[_sa]('style', 'display:none');
         clone[_sa]('data-seed', seed);
         clone[_qsa]('.w_bs,.w_cs,#w_qr,#w_a,#w_rl,#na_a').forEach(i => i.innerHTML = '');
-        clone[_qqs]('#spin').removeAttribute('style');
-        clone[_qqs]('#w_rl').removeAttribute('href');
+        clone[_qs]('#spin').removeAttribute('style');
+        clone[_qs]('#w_rl').removeAttribute('href');
         clone[_qsa]('script').forEach(i => i[_sa]('src', i.src));
         clone[_qsa]('link').forEach(i => i[_sa]('href', i.href));
         
