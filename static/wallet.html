@@ -12,23 +12,12 @@
             frame.setAttribute('sandbox','allow-scripts allow-forms allow-top-navigation allow-popups allow-modals allow-popups-to-escape-sandbox');
             var hash = document.location.hash;
             if(hash) {
-                frame.src = hash.split(/^\#\/?(.*)/)[1];
-//                var index = hash.toString().indexOf('base64,');
-                    //.split(/^\#\/?(.*)/)[1];
-//                if(index > 0) {
-//                    document.querySelector('body').innerHTML = atob(hash.substr(index+7));
-//                }
-
+                frame.src = hash.toString().split(/^\#\/?(.*)/)[1];
                 document.querySelector('body').appendChild(frame);
-                frame.onload = function() {
-                    document.querySelector('body').innerHTML = frame.contentDocument.querySelector('body').innerHTML;
-                }
             }
         </script>
         <style type="text/css">
             #iframe {
-                visibility : hidden;
-                opacity : 0;
                 border: 0;
                 position: absolute;
                 top: 0;
