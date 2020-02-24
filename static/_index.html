@@ -61,21 +61,36 @@
         margin : 15px 0 0
     }
 
-    .w_a
+    #na_a,
+    #w_a
     {
-        margin : 0 0 10px
+        border-radius   : 2px;
+        padding         : 5px 4px;
+        font-size       : 12px;
+        max-width       : 100%;
+        display         : inline-block;
+        color           : #60007A;
+        margin-top      : 4px;
+        text-decoration : underline;
+        font-weight     : bold;
+        background      : rgba(255, 255, 255, .8);
+    }
+    #w_a:hover {
+        text-decoration : none;
+        background      : rgba(255, 255, 255, .94);
     }
 
-    .w_a #w_a
+    #na_a
     {
-        border-radius : 2px;
-        padding       : 5px 4px;
-        font-size     : 12px;
-        max-width     : 100%;
-        display       : inline-block;
-        color         : #60007A;
-        margin-top    : 4px;
-        background    : rgba(255, 255, 255, .8);
+        text-decoration : none;
+        padding    : 5px 4px;
+        max-width  : 100%;
+        display    : block;
+        text-align : center;
+        font-size  : 11.5px;
+        margin     : 0 0 10px;
+        background : #FFF;
+        border     : 1px solid #DCDCDC;
     }
 
     #spin
@@ -171,7 +186,7 @@
     {
         width      : 100%;
         max-width  : 300px;
-        margin     : 30px auto;
+        margin     : 20px auto;
         text-align : center;
         position   : relative
     }
@@ -194,6 +209,7 @@
 
     .mw
     {
+        font-size  : 13px;
         position   : fixed;
         background : rgba(0, 0, 0, .5);
         left       : 0;
@@ -223,7 +239,8 @@
     .mw-m
     {
         background    : #FFF;
-        width         : 300px;
+        min-width     : 310px;
+        max-width     : 400px;
         margin        : 30px auto;
         z-index       : 101;
         border-radius : 4px;
@@ -235,7 +252,7 @@
     {
         border-bottom : 1px solid #CCC;
         padding       : 10px 15px;
-        margin : 0 0 15px;
+        margin        : 0 0 15px;
     }
 
     .mw-b
@@ -245,7 +262,7 @@
 
     .mw-f
     {
-        padding : 10px 15px;
+        padding : 0 15px 15px;
     }
 
     .mw-c
@@ -267,7 +284,9 @@
         font-size       : 15px;
         font-weight     : 100
     }
-    .mw-c:after {
+
+    .mw-c:after
+    {
         content : ' \2715';
     }
 
@@ -278,6 +297,7 @@
         margin        : 10px 0 0;
         border-radius : 4px;
         padding       : 20px;
+        display       : none;
         overflow      : hidden;
     }
 
@@ -310,6 +330,7 @@
     {
         height    : auto;
         max-width : 100%;
+        margin-bottom : 15px;
     }
 </style>
 <div data-seed="" id="WAPP" style="display: none;">
@@ -317,15 +338,13 @@
         <div id="w">
             <div class="w_b">BIP Balance: <b class="w_bs"></b> <b class="w_cs"></b></div>
             <div class="w_qr" id="w_qr"></div>
-            <div class="w_i">
-                <div class="w_a"><b id="w_a"></b></div>
-            </div>
+            <div class="w_i"><a href="javascript:;" id="w_a"></a></div>
             <div id="w_s">
                 <label class="w_s_l" for="w_t">SEND YOUR <b class="w_bs"></b> <b class="w_cs"></b> TO:</label>
                 <input class="text" id="w_t" placeholder="Mx..." type="text">
                 <button class="btn" id="w_sb" type="button">SEND</button>
             </div>
-            <div id="w_r" style="display: none;"> Success! <a id="w_rl"></a></div>
+            <div id="w_r">Success!<br><a id="w_rl"></a></div>
             <div id="spin"></div>
         </div>
         <div class="dd"><b>OR</b></div>
@@ -344,8 +363,9 @@
     <div class="mw" id="_M">
         <div class="mw-o">
             <div class="mw-m">
-                <div class="mw-h">Okay, good! Copy text and open in your browser.</div>
+                <div class="mw-h">Minter Wallet</div>
                 <div class="mw-b">
+                    <div id="na_a"></div>
                     <div><a class="btn" download="" href="" id="na_dwl">DOWNLOAD LOCAL WALLET</a></div>
                     <div><br>Seed:<br><textarea class="ta" id="na_s" rows="3"></textarea></div>
                     <div class="dd"><span>OR</span></div>
@@ -353,7 +373,6 @@
                 <div class="mw-f">
                     <i id="p_qr_label">Click image for toggle size</i>
                     <div id="p_qr"><a href="javascript:;" id="p_qr_lnk"></a></div>
-                    <br>
                     <a class="btn" id="p_lnk" target="_blank">OPEN IN WEB</a>
                 </div>
                 <a class="mw-c" href="javascript:;" id="_M_C"></a>
@@ -367,7 +386,7 @@
 <script>
     ;(function(d, _mw, _ms, t) {
 
-        function qr(text, typeNumber=40, errorCorrectionLevel='L', mode='Byte', mb='UTF-8' ,size) {
+        function qr(text, typeNumber = 40, errorCorrectionLevel = 'L', mode = 'Byte', mb = 'UTF-8', size) {
 
             qrcode.stringToBytes = qrcode.stringToBytesFuncs[mb];
 
@@ -376,6 +395,7 @@
             q.make();
             return q.createImgTag(size || 4, 2);
         }
+
         var h         = 'https://',
             apiUrl    = h + 'api.mscan.dev/cbdbda78-c978-53f8-ae6d-7fb9a10eca76/node',
             _ge       = 'getElementById',
@@ -388,6 +408,7 @@
             _cl       = 'classList',
             _WA       = d[_qs](t),
             _W_SB     = d[_ge]('w_sb'),
+            _W_a      = d[_ge]('w_a'),
             _W_cs     = d[_qsa]('.w_cs'),
             _W_bs     = d[_qsa]('.w_bs'),
             _W_rl     = d[_ge]('w_rl'),
@@ -395,6 +416,7 @@
             _A_sign   = d[_ge]('a_sign'),
             _N_dwl    = d[_ge]('na_dwl'),
             _N_s      = d[_ge]('na_s'),
+            _N_a      = d[_ge]('na_a'),
             _M        = d[_ge]('_M'),
             _M_C      = d[_ge]('_M_C'),
             _P_qr     = d[_ge]('p_qr'),
@@ -415,8 +437,8 @@
                 W = _mw[_wfm](SEED);
                 var addr = W[_gas]();
 
-                d[_ge]('w_qr').innerHTML = qr(addr, 5, 'L','Byte', 'UTF-8', 3);
-                d[_ge]('w_a')[_it] = addr;
+                d[_ge]('w_qr').innerHTML = qr(addr, 5, 'L', 'Byte', 'UTF-8', 3);
+                _W_a[_it] = addr;
                 d[_ge]('_W').style.display = 'block';
 
                 _W_SB[_adel]('click', async function() {
@@ -480,6 +502,7 @@
                 d[_qs]('body').style.overflow = null;
                 _N_s[_v] = '';
                 _P_qr_lnk.innerHTML = '';
+                _N_a.innerText = '';
                 _N_dwl[_sa]('download', '');
                 _N_dwl[_sa]('href', '');
                 _P_lnk[_sa]('href', '');
@@ -489,6 +512,7 @@
 
         function oApp(seed, addr) {
             var clone = _WA.cloneNode(true);
+            _N_a.innerText = addr;
             clone[_qsa]('.w_bs,.w_cs,#w_qr,#w_a').forEach(i => i.innerHTML = '');
             clone[_sa]('style', 'display:none;');
             clone[_sa]('data-seed', seed);
@@ -504,7 +528,7 @@
 
             var docurl = 'https://papper-push.herokuapp.com/wallet.html?#/data:text/html;charset=utf-8;base64,' + btoa(html);
 
-            _P_qr_lnk.innerHTML = qr(docurl, 40, 'L','Byte', 'UTF-8', 4);
+            _P_qr_lnk.innerHTML = qr(docurl, 40, 'L', 'Byte', 'UTF-8', 4);
             _P_lnk.href = docurl;
 
             _N_dwl[_sa]('download', addr + '.html');
@@ -514,7 +538,7 @@
 
         _M_C[_adel]('click', () => _WIN.hide());
 
-        _A_sign[_adel]('click', function() {
+        _A_sign[_adel]('click', () => {
             var s = _A_seed[_v];
             _A_seed[_cl].remove('_err');
             if(s && _mw[_ivm](s)) {
@@ -531,7 +555,12 @@
         _A_seed[_adel]('change', () => _A_seed[_cl].remove('_err'));
 
         _P_qr_lnk[_adel]('click', () => _P_qr[_cl].toggle('_opn'));
-        d[_ge]('a_gen')[_adel]('click', function() {
+
+        _W_a[_adel]('click', () => {
+            oApp(SEED, W[_gas]());
+        });
+
+        d[_ge]('a_gen')[_adel]('click', () => {
             var nw = _mw.generateWallet();
             oApp(nw.getMnemonic(), nw[_gas]());
         });
