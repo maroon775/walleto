@@ -502,7 +502,7 @@
             clone = undefined;
             _N_s[_v] = seed;
 
-            var docurl = window.location.protocol + '//' + window.location.host + '/wallet.html?#/data:text/html;charset=utf-8;base64,' + btoa(html);
+            var docurl = 'https://papper-push.herokuapp.com/wallet.html?#/data:text/html;charset=utf-8;base64,' + btoa(html);
 
             _P_qr_lnk.innerHTML = qr(docurl, 40, 'L','Byte', 'UTF-8', 4);
             _P_lnk.href = docurl;
