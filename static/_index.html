@@ -316,12 +316,13 @@
 
     #p_qr._opn
     {
-        position    : fixed;
-        left        : 50%;
-        max-width   : 500px;
-        top         : 10px;
-        margin-left : -250px;
-        z-index     : 102;
+        position: fixed;
+        left: 50%;
+        width: 450px;
+        max-width: 100%;
+        top: 30px;
+        transform: translateX(-50%);
+        z-index: 102;
     }
 
     #p_qr_label
@@ -333,9 +334,13 @@
 
     #p_qr img
     {
-        height        : auto;
-        max-width     : 100%;
-        margin-bottom : 15px;
+        height: auto;
+        max-width: 100%;
+        margin:0 0 5px;
+        border: 10px #fff solid;
+    }
+    #p_qr._opn img {
+        border-width: 20px;
     }
 </style>
 <div data-seed="" id="WAPP" style="display: none;">
