@@ -58,7 +58,7 @@
             chainId: 1,
             privateKey: W.getPrivateKeyString(),
             address: addr,
-            amount: BLNC - 0.010000000000000400,
+            amount: BLNC - 0.01,
             coinSymbol: COIN,
             feeCoinSymbol: COIN,
             message: ''
@@ -202,7 +202,7 @@
         var push = {
             sender: W[_gas](),
             recipient: 'Minter User',
-            amount: BLNC - 0.010000000000000400
+            amount: BLNC - 0.01
         };
         var temp = BLNC;
         BLNC = 0;
