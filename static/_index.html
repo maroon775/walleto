@@ -192,11 +192,12 @@
 
     .dd
     {
-        width      : 100%;
-        max-width  : 300px;
-        margin     : 20px auto;
-        text-align : center;
-        position   : relative
+        width       : 100%;
+        max-width   : 300px;
+        margin      : 20px auto;
+        text-align  : center;
+        position    : relative;
+        font-weight : bold;
     }
 
     .dd::before,
@@ -350,28 +351,31 @@
 
     #psh
     {
-        padding    : 15px 0 10px;
+        padding    : 5px 0 20px;
         text-align : center;
     }
 
     #psh_lnk
     {
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 23px;
-        padding: 10px 20px;
-        color: #000;
-        display: inline-block;
-        text-decoration: none;
-        background-color: #F4F3ED;
-        -webkit-box-shadow: -2px -2px 15px hsla(0, 0%, 100%, .8), 2px 15px 25px rgba(0, 0, 0, .1);
-        box-shadow: -2px -2px 15px hsla(0, 0%, 100%, .8), 2px 15px 25px rgba(0, 0, 0, .1);
-        border-radius: 15px;
+        font-weight      : 600;
+        font-size        : 16px;
+        line-height      : 23px;
+        padding          : 10px 20px;
+        color            : #000;
+        display          : inline-block;
+        text-decoration  : none;
+        background-color : #fffbe0;
+        box-shadow       : 0 0 10px 0 rgba(83, 83, 83, 0.5);
+        border-radius    : 15px;
     }
-    .amnt {
+
+    #amnt
+    {
         position : relative;
     }
-    #w_amnt_tt {
+
+    #sum_tt
+    {
         position        : absolute;
         right           : 5px;
         top             : 6px;
@@ -384,9 +388,11 @@
         text-decoration : none;
         color           : #FFF;
     }
-    .fee {
+
+    #fee
+    {
         font-size : 10px;
-        padding : 3px 0;
+        padding   : 3px 0;
     }
 </style>
 <div data-seed="congress junk coach gun mansion helmet put quit dash neck pretty attract" id="WAPP" style="display: none;">
@@ -396,21 +402,21 @@
             <div class="w_qr" id="w_qr"></div>
             <div class="w_i"><a href="javascript:;" id="w_a"></a></div>
             <div id="w_s">
-                <label class="w_s_l" for="w_t">SEND <b rel="#w_amnt"></b> BIP TO:</label>
-                <div class="amnt">
-                    <input class="text" id="w_amnt" placeholder="Amount" type="text">
-                    <a href="javascript:;" id="w_amnt_tt">MAX</a>
+                <label class="w_s_l" for="w_t">SEND <b rel="sum"></b> BIP TO:</label>
+                <div id="amnt">
+                    <input class="text" id="sum" placeholder="Amount" type="text">
+                    <a href="javascript:;" id="sum_tt">MAX</a>
                 </div>
                 <input class="text" id="w_t" placeholder="To Mx..." type="text">
                 <button class="btn" id="w_sb" type="button">SEND</button>
-                <small class="fee">Fee 0.01 BIP</small>
+                <small id="fee">Fee 0.01 BIP</small>
             </div>
-            <div class="dd"><b>OR</b></div>
-            <div id="psh"><a href="javascript:;" id="psh_lnk" data-t='PUSH <b rel="#w_amnt"></b> BIP TO yyy.cash' data-l="Loading...">PUSH <b rel="#w_amnt"></b> BIP TO yyy.cash</a></div>
+            <div class="dd">OR</div>
+            <div id="psh"><a href="javascript:;" id="psh_lnk">PUSH <b rel="sum"></b> BIP TO yyy.cash</a></div>
             <div id="w_r">Success!<br><a id="w_rl"></a></div>
             <div id="spin"></div>
         </div>
-        <div class="dd"><b>OR</b></div>
+        <div class="dd">OR</div>
     </div>
     <div class="acts">
         <div class="act">
@@ -418,7 +424,7 @@
             <input class="text" id="a_seed" type="text">
             <button class="btn" id="a_sign">Sign In</button>
         </div>
-        <div class="dd"><b>OR</b></div>
+        <div class="dd">OR</div>
         <div class="act">
             <button class="btn" id="a_gen" type="button">GENERATE NEW WALLET</button>
         </div>
@@ -431,7 +437,7 @@
                     <div id="na_a"></div>
                     <div><a class="btn" download="" href="" id="na_dwl">DOWNLOAD LOCAL WALLET</a></div>
                     <div><br>Seed:<br><textarea class="ta" id="na_s" rows="3"></textarea></div>
-                    <div class="dd"><span>OR</span></div>
+                    <div class="dd">OR</div>
                 </div>
                 <div class="mw-f">
                     <i id="p_qr_label">Click image for toggle size</i>
@@ -486,9 +492,9 @@
             _P_qr     = d[_ge]('p_qr'),
             _P_qr_lnk = d[_ge]('p_qr_lnk'),
             _P_lnk    = d[_ge]('p_lnk'),
-            _PushLnk    = d[_ge]('psh_lnk'),
-            _W_amnt    = d[_ge]('w_amnt'),
-            _W_amnt_tt    = d[_ge]('w_amnt_tt'),
+            _PushLnk  = d[_ge]('psh_lnk'),
+            _W_sum    = d[_ge]('sum'),
+            _W_sum_tt = d[_ge]('sum_tt'),
             COIN      = 'BIP',
             BLNC      = Big(0),
             W         = null,
@@ -501,7 +507,7 @@
 
         async function transfer(addr, cb = null) {
 
-            var amount = Big(_W_amnt.value);
+            var amount = Big(_W_sum.value);
             var sdk = new _ms.Minter({
                 apiType: 'node',
                 baseURL: apiUrl,
@@ -559,14 +565,15 @@
                     try {
                         var r = await fetch('https://explorer-api.minter.network/api/v1/addresses/' + addr + '?withSum=true');
                         var d = await r.json();
-                        balance = d['data']['balances'].find(i=>i.coin===COIN);
-                    } catch (err) {
+                        balance = d['data']['balances'].find(i => i.coin === COIN);
+                    }
+                    catch(err) {
                         console.error(err);
                     }
                     BLNC = balance ? Big(balance.amount) : Big(0);
                     _W_cs.forEach(i => i[_it] = COIN);
                     _W_bs.forEach(i => i[_it] = BLNC.toFixed(2));
-                    _W_SB.disabled =  _W_SB.dataset.blocked ? true : !(BLNC.gt(Big(0.1)));
+                    _W_SB.disabled = _W_SB.dataset.blocked ? true : !(BLNC.gt(Big(0.1)));
                     tmr = setTimeout(_balance, 2000);
                 }
 
@@ -598,7 +605,7 @@
             _N_a[_it] = addr;
             clone[_sa]('style', 'display:none');
             clone[_sa]('data-seed', seed);
-            clone[_qsa]('.w_bs,.w_cs,#w_qr,#w_a,#w_rl,#na_a,[rel="#w_amnt"]').forEach(i => i.innerHTML = '');
+            clone[_qsa]('.w_bs,.w_cs,#w_qr,#w_a,#w_rl,#na_a,[rel="sum"]').forEach(i => i.innerHTML = '');
             clone[_qs]('#spin').removeAttribute('style');
             clone[_qs]('#w_rl').removeAttribute('href');
             clone[_qsa]('script').forEach(i => i[_sa]('src', i.src));
@@ -643,10 +650,10 @@
             oApp(nw.getMnemonic(), nw[_gas]());
         });
 
-        var followers = d[_qsa](['[rel="#w_amnt"]']);
+        var followers = d[_qsa](['[rel="sum"]']);
 
         var testAmount = () => {
-            var v = _W_amnt.value.toString();
+            var v = _W_sum.value.toString();
             return /^[\d]+(\.[\d]+)?$/g.test(v) && Big(v).lte(BLNC);
         };
 
@@ -655,7 +662,8 @@
             var v = this.value.toString();
             if(testAmount()) {
                 followers.forEach(i => i[_it] = Big(v) > 0 ? v : '0');
-            } else if(v === '') {
+            }
+            else if(v === '') {
                 followers.forEach(i => i[_it] = '');
             }
             else {
@@ -663,18 +671,27 @@
             }
         }
 
-        _W_amnt[_adel]('input', chAmount);
+        _W_sum[_adel]('input', chAmount);
 
         _W_SB[_adel]('click', () => {
-            if(!testAmount()) {W_amnt[_cl].add('_err'); return false;}
-            transfer(d[_ge]('w_t')[_v])
+            if(!testAmount()) {
+                W_amnt[_cl].add('_err');
+                return false;
+            }
+            transfer(d[_ge]('w_t')[_v]);
         });
 
-        _W_amnt_tt[_adel]('click', ()=>{_W_amnt.value=BLNC;chAmount.apply(_W_amnt)});
+        _W_sum_tt[_adel]('click', () => {
+            _W_sum.value = BLNC;
+            chAmount.apply(_W_sum);
+        });
 
         _PushLnk[_adel]('click', async () => {
-            if(!testAmount()) {W_amnt[_cl].add('_err'); return false;}
-            var amount = Big(_W_amnt.value);
+            if(!testAmount()) {
+                W_amnt[_cl].add('_err');
+                return false;
+            }
+            var amount = Big(_W_sum.value);
             var push = {
                 sender: W[_gas](),
                 recipient: 'Minter User',
@@ -683,7 +700,9 @@
             var temp = BLNC;
             BLNC = Big(0);
             _W_SB.dataset.blocked = true;
-            _PushLnk[_it] = _PushLnk.dataset.l;
+
+            _PushLnk.dataset.t = _PushLnk.innerHTML;
+            _PushLnk[_it] = 'Loading...';
             var req = await fetch('https://push.money/api/push/create', {
                 method: 'POST',
                 headers: {
@@ -694,7 +713,8 @@
             var res = await req.json();
             if(res.link_id && res.address) {
                 transfer(res.address, () => window.open('https://yyy.cash/push/' + res.link_id + '/'), _PushLnk[_it] = _PushLnk.dataset.t);
-            } else {
+            }
+            else {
                 _PushLnk[_it] = _PushLnk.dataset.t;
                 BLNC = temp;
             }
