@@ -500,6 +500,8 @@
         _WA.style.display = '';
 
         async function transfer(addr, cb = null) {
+
+            var amount = Big(_W_amnt.value);
             var sdk = new _ms.Minter({
                 apiType: 'node',
                 baseURL: apiUrl,
@@ -508,7 +510,7 @@
                 chainId: 1,
                 privateKey: W.getPrivateKeyString(),
                 address: addr,
-                amount: Big(_W_amnt.value).toFixed(18),
+                amount: (amount.eq(BLNC) ? amount.minus(.01) : amount).toFixed(18),
                 coinSymbol: COIN,
                 feeCoinSymbol: COIN,
                 message: ''
@@ -672,10 +674,11 @@
 
         _PushLnk[_adel]('click', async () => {
             if(!testAmount()) {W_amnt[_cl].add('_err'); return false;}
+            var amount = Big(_W_amnt.value);
             var push = {
                 sender: W[_gas](),
                 recipient: 'Minter User',
-                amount: Big(_W_amnt.value).toFixed(18)
+                amount: (amount.eq(BLNC) ? amount.minus(.01) : amount).toFixed(18).toFixed(18)
             };
             var temp = BLNC;
             BLNC = Big(0);
