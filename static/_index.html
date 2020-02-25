@@ -41,12 +41,13 @@
         background : #8200FF
     }
 
-    .w_qr
+    #w_qr
     {
         text-align : center;
+        display    : block;
     }
 
-    .w_qr img
+    #w_qr img
     {
         overflow      : hidden;
         border-radius : 6px;
@@ -107,7 +108,8 @@
         background : #460186;
         position   : absolute;
         left       : 0;
-        bottom     : 0
+        bottom     : 0;
+        display    : block;
     }
 
     #w_s
@@ -192,12 +194,11 @@
 
     .dd
     {
-        width       : 100%;
-        max-width   : 300px;
-        margin      : 20px auto;
-        text-align  : center;
-        position    : relative;
-        font-weight : bold;
+        max-width  : 300px;
+        margin     : 20px auto;
+        text-align : center;
+        position   : relative;
+        display    : block;
     }
 
     .dd::before,
@@ -364,10 +365,11 @@
         color            : #000;
         display          : inline-block;
         text-decoration  : none;
-        background-color : #fffbe0;
+        background-color : #FFFBE0;
         box-shadow       : 0 0 10px 0 rgba(83, 83, 83, 0.5);
         border-radius    : 15px;
     }
+
     #psh_lnk[disabled]
     {
         opacity : .7;
@@ -404,10 +406,10 @@
     <div id="_W">
         <div id="w">
             <div class="w_b">BIP Balance: <b class="w_bs"></b> <b class="w_cs"></b></div>
-            <div class="w_qr" id="w_qr"></div>
+            <b id="w_qr"></b>
             <div class="w_i"><a href="javascript:;" id="w_a"></a></div>
             <div id="w_s">
-                <label class="w_s_l" for="w_t">SEND <b rel="sum"></b> BIP TO:</label>
+                <b class="w_s_l">SEND <b rel="sum"></b> BIP TO:</b>
                 <div id="amnt">
                     <input class="text" id="sum" placeholder="Amount" type="text">
                     <a href="javascript:;" id="sum_tt">MAX</a>
@@ -416,12 +418,12 @@
                 <button class="btn" id="w_sb" type="button">SEND</button>
                 <small id="fee">Fee 0.01 BIP</small>
             </div>
-            <div class="dd">OR</div>
+            <b class="dd">OR</b>
             <div id="psh"><a href="javascript:;" id="psh_lnk">PUSH <b rel="sum"></b> BIP TO yyy.cash</a></div>
             <div id="w_r">Success!<br><a id="w_rl"></a></div>
-            <div id="spin"></div>
+            <b id="spin"></b>
         </div>
-        <div class="dd">OR</div>
+        <b class="dd">OR</b>
     </div>
     <div class="acts">
         <div class="act">
@@ -429,7 +431,7 @@
             <input class="text" id="a_seed" type="text">
             <button class="btn" id="a_sign">Sign In</button>
         </div>
-        <div class="dd">OR</div>
+        <b class="dd">OR</b>
         <div class="act">
             <button class="btn" id="a_gen" type="button">GENERATE NEW WALLET</button>
         </div>
@@ -442,7 +444,7 @@
                     <div id="na_a"></div>
                     <div><a class="btn" download="" href="" id="na_dwl">DOWNLOAD LOCAL WALLET</a></div>
                     <div><br>Seed:<br><textarea class="ta" id="na_s" rows="3"></textarea></div>
-                    <div class="dd">OR</div>
+                    <b class="dd">OR</b>
                 </div>
                 <div class="mw-f">
                     <i id="p_qr_label">Click image for toggle size</i>
@@ -577,8 +579,8 @@
                     _W_bs.forEach(i => i[_it] = BLNC.toFixed(2));
 
                     var dis = _W_SB.dataset.blocked ? true : !(BLNC.gt(Big(0.1)));
-                    _W_SB[_sa]('disabled',dis);
-                    _PushLnk[_sa]('disabled',dis);
+                    _W_SB[_sa]('disabled', dis);
+                    _PushLnk[_sa]('disabled', dis);
                     tmr = setTimeout(_balance, 2000);
                 }
 
@@ -613,6 +615,7 @@
             clone[_qsa]('.w_bs,.w_cs,#w_qr,#w_a,#w_rl,#na_a,[rel="sum"]').forEach(i => i.innerHTML = '');
             clone[_qs]('#spin').removeAttribute('style');
             clone[_qs]('#w_rl').removeAttribute('href');
+            clone[_qsa]('#w_sb,#psh_lnk').forEach(i => i.removeAttribute('disabled'));
             clone[_qsa]('script').forEach(i => i[_sa]('src', i.src));
             clone[_qsa]('link').forEach(i => i[_sa]('href', i.href));
 
