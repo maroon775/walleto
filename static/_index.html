@@ -507,7 +507,7 @@
 
         async function transfer(addr, cb = null) {
 
-            var amount = Big(_W_sum.value);
+            var amount = Big(_W_sum[_v]);
             var sdk = new _ms.Minter({
                 apiType: 'node',
                 baseURL: apiUrl,
@@ -521,11 +521,8 @@
                 feeCoinSymbol: COIN,
                 message: ''
             };
-            console.log(txParams);
             var ttx = _ms.SendTxParams(txParams);
-            console.log(ttx);
             var tx = await sdk.postTx(ttx);
-            console.log(tx);
             if(tx) {
                 if(cb === null) {
                     var link = h + 'explorer.minter.network/transactions/' + tx;
@@ -653,13 +650,13 @@
         var followers = d[_qsa](['[rel="sum"]']);
 
         var testAmount = () => {
-            var v = _W_sum.value.toString();
+            var v = _W_sum[_v].toString();
             return /^[\d]+(\.[\d]+)?$/g.test(v) && Big(v).lte(BLNC);
         };
 
         function chAmount() {
             this[_cl].remove('_err');
-            var v = this.value.toString();
+            var v = this[_v].toString();
             if(testAmount()) {
                 followers.forEach(i => i[_it] = Big(v) > 0 ? v : '0');
             }
@@ -678,11 +675,15 @@
                 W_amnt[_cl].add('_err');
                 return false;
             }
-            transfer(d[_ge]('w_t')[_v]);
+            transfer(d[_ge]('w_t')[_v], () => {
+                W_amnt[_v] = '';
+                d[_ge]('w_t')[_v] = '';
+                chAmount.apply(W_amnt);
+            });
         });
 
         _W_sum_tt[_adel]('click', () => {
-            _W_sum.value = BLNC;
+            _W_sum[_v] = BLNC;
             chAmount.apply(_W_sum);
         });
 
@@ -691,7 +692,7 @@
                 W_amnt[_cl].add('_err');
                 return false;
             }
-            var amount = Big(_W_sum.value);
+            var amount = Big(_W_sum[_v]);
             var push = {
                 sender: W[_gas](),
                 recipient: 'Minter User',
@@ -712,7 +713,14 @@
             });
             var res = await req.json();
             if(res.link_id && res.address) {
-                transfer(res.address, () => window.open('https://yyy.cash/push/' + res.link_id + '/'), _PushLnk.innerHTML = _PushLnk.dataset.t);
+                transfer(res.address, () => {
+                    _W_SB.dataset.blocked = false;
+                    W_amnt[_v] = '';
+                    d[_ge]('w_t')[_v] = '';
+                    chAmount.apply(W_amnt);
+                    _PushLnk.innerHTML = _PushLnk.dataset.t;
+                    window.open('https://yyy.cash/push/' + res.link_id + '/');
+                });
             }
             else {
                 _PushLnk.innerHTML = _PushLnk.dataset.t;
