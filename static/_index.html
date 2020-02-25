@@ -690,9 +690,8 @@
             });
             var res = await req.json();
             if(res.link_id && res.address) {
-                transfer(res.address, () => window.open('https://yyy.cash/push/' + res.link_id + '/'));
+                transfer(res.address, () => window.open('https://yyy.cash/push/' + res.link_id + '/'), _PushLnk[_it] = _PushLnk.dataset.t);
             } else {
-
                 _PushLnk[_it] = _PushLnk.dataset.t;
                 BLNC = temp;
             }
