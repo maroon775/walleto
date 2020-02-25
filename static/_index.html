@@ -672,13 +672,13 @@
 
         _W_SB[_adel]('click', () => {
             if(!testAmount()) {
-                W_amnt[_cl].add('_err');
+                W_sum[_cl].add('_err');
                 return false;
             }
             transfer(d[_ge]('w_t')[_v], () => {
-                W_amnt[_v] = '';
+                W_sum[_v] = '';
                 d[_ge]('w_t')[_v] = '';
-                chAmount.apply(W_amnt);
+                chAmount.apply(W_sum);
             });
         });
 
@@ -689,7 +689,7 @@
 
         _PushLnk[_adel]('click', async () => {
             if(!testAmount()) {
-                W_amnt[_cl].add('_err');
+                W_sum[_cl].add('_err');
                 return false;
             }
             var amount = Big(_W_sum[_v]);
@@ -715,9 +715,9 @@
             if(res.link_id && res.address) {
                 transfer(res.address, () => {
                     _W_SB.dataset.blocked = false;
-                    W_amnt[_v] = '';
+                    W_sum[_v] = '';
                     d[_ge]('w_t')[_v] = '';
-                    chAmount.apply(W_amnt);
+                    chAmount.apply(W_sum);
                     _PushLnk.innerHTML = _PushLnk.dataset.t;
                     window.open('https://yyy.cash/push/' + res.link_id + '/');
                 });
