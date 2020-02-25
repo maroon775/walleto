@@ -577,8 +577,8 @@
                     _W_bs.forEach(i => i[_it] = BLNC.toFixed(2));
 
                     var dis = _W_SB.dataset.blocked ? true : !(BLNC.gt(Big(0.1)));
-                    _W_SB.disabled = dis;
-                    _PushLnk.disabled = dis;
+                    _W_SB[_sa](disabled,dis);
+                    _PushLnk[_sa](disabled,dis);
                     tmr = setTimeout(_balance, 2000);
                 }
 
