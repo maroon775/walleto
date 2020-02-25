@@ -368,6 +368,11 @@
         box-shadow       : 0 0 10px 0 rgba(83, 83, 83, 0.5);
         border-radius    : 15px;
     }
+    #psh_lnk[disabled]
+    {
+        opacity : .7;
+        cursor  : not-allowed;
+    }
 
     #amnt
     {
@@ -570,7 +575,10 @@
                     BLNC = balance ? Big(balance.amount) : Big(0);
                     _W_cs.forEach(i => i[_it] = COIN);
                     _W_bs.forEach(i => i[_it] = BLNC.toFixed(2));
-                    _W_SB.disabled = _W_SB.dataset.blocked ? true : !(BLNC.gt(Big(0.1)));
+
+                    var dis = _W_SB.dataset.blocked ? true : !(BLNC.gt(Big(0.1)));
+                    _W_SB.disabled = dis;
+                    _PushLnk.disabled = dis;
                     tmr = setTimeout(_balance, 2000);
                 }
 
